@@ -15,4 +15,5 @@ import FooterCmp from './components/FooterCmp.vue'
   <footer>
     <FooterCmp />
   </footer>
+
 </template>

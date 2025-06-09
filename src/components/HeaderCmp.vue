@@ -44,18 +44,23 @@
 
   <div v-if="showMobileMenu && isMobile" class="mobile-menu">
     <n-space vertical>
-      <n-button>Главная</n-button>
-      <n-button>Товары</n-button>
-      <n-button>О нас</n-button>
-      <n-button>Контакты</n-button>
+      <n-button text type="default">Главная</n-button>
+      <n-button text type="default">Товары</n-button>
+      <n-button text type="default">О нас</n-button>
+      <n-button text type="default" @click="isModalOpen = true">Контакты</n-button>
+      <ContactModal v-model:show="isModalOpen" />
     </n-space>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { NLayoutHeader, NGrid, NGridItem, NButton, NIcon, NSpace } from 'naive-ui'
 import { MenuOutline as MenuIcon, CartOutline as CartIcon } from '@vicons/ionicons5'
+
+import ContactModal from '@/modal/ContactsModal.vue';
+
+const isModalOpen = ref(false);
 
 const showMobileMenu = ref(false)
 const screenWidth = ref(window.innerWidth)
@@ -74,9 +79,5 @@ const toggleMobileMenu = () => {
 onMounted(() => {
   window.addEventListener('resize', updateScreenWidth)
   updateScreenWidth()
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateScreenWidth)
 })
 </script>
