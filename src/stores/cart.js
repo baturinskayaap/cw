@@ -14,18 +14,22 @@ export const useCartStore = defineStore('cart', {
         this.items.push({ type, id })
       }
     },
+    // переключатель(тип, номер)
+    // получаем индекс первого эл из item удовл усл соотв типа и индекса
+    // индекс от 0 => >-1 - удаляем из массива, иначе - добавляем
     submitOrder(customerData) {
       const order = {
         customer: customerData,
         items: this.items,
       }
       console.log('Order submitted:', order)
-      this.items = []
+      this.items = [] //заказ оформлен => пустая корзина
     },
   },
-
   getters: {
     isInCart: (state) => (type, id) =>
       state.items.some((item) => item.type == type && item.id == id),
   },
+  //принимаем переменную state, возвращаем функцию от типа + id,
+  // которая возвращает тру/фолс о наличии в items
 })

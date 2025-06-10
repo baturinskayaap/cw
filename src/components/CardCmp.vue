@@ -1,3 +1,27 @@
+<template>
+  <n-empty v-if="!displayedItems.length && props.mode=='cart'" description="Корзина пуста" class="empty-cart" />
+  <n-grid cols="1 s:2 l:4" responsive="screen" :x-gap="16" :y-gap="20" class="card-container">
+    <n-grid-item v-for="item in displayedItems" :key="`${item.type}-${item.id}`">
+      <n-card type="small">
+        <template #cover>
+          <img :src="item.photo" :alt="item.name" class="image-c" />
+        </template>
+        <h3>{{ item.name }}</h3>
+        <p>
+          {{ item.type == 'pets' ? `Возраст: ${item.age} года` : `Цена: ${item.cost} руб.` }}
+        </p>
+        <n-button type="primary" @click="cartStore.toggleItem(item.type, item.id)">
+          {{
+            isInCart(item.type, item.id)
+              ? 'Убрать'
+              : buttonTexts[props.mode == 'cart' ? 'cart' : item.type]
+          }}
+        </n-button>
+      </n-card>
+    </n-grid-item>
+  </n-grid>
+</template>
+
 <script setup>
 import { usePetsStore } from '@/stores/pup'
 import { useGoodsStore } from '@/stores/goods'
@@ -52,33 +76,3 @@ const buttonTexts = {
 
 const isInCart = (type, id) => cartStore.isInCart(type, id)
 </script>
-
-<template>
-  <n-empty v-if="!displayedItems.length" description="Корзина пуста" class="empty-cart" />
-  <n-grid cols="1 s:2 l:4" responsive="screen" :x-gap="16" :y-gap="20" class="card-container">
-    <n-grid-item v-for="item in displayedItems" :key="`${item.type}-${item.id}`">
-      <n-card type="small">
-        <template #header>
-          <h3>{{ item.name }}</h3>
-        </template>
-        <template #cover>
-          <img :src="item.photo" :alt="item.name" class="image" />
-        </template>
-
-        <p>
-          {{ item.type == 'pets' ? `Возраст: ${item.age} года` : `Цена: ${item.cost} руб.` }}
-        </p>
-
-        <template #action>
-          <n-button type="primary" @click="cartStore.toggleItem(item.type, item.id)">
-            {{
-              isInCart(item.type, item.id)
-                ? 'Убрать'
-                : buttonTexts[props.mode == 'cart' ? 'cart' : item.type]
-            }}
-          </n-button>
-        </template>
-      </n-card>
-    </n-grid-item>
-  </n-grid>
-</template>

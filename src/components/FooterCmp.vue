@@ -1,5 +1,5 @@
 <template>
-  <footer class="footer">
+
     <n-space justify="center">
       <n-button text v-for="link in links" :key="link">
         {{ link }}
@@ -25,11 +25,11 @@
         <n-button text>Terms of Service</n-button>
       </n-grid-item>
     </n-grid>
-  </footer>
+
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 import { NButton, NIcon, NDivider, NSpace, NGrid, NGridItem } from 'naive-ui'
 import { LogoFacebook, LogoInstagram, LogoTwitter, LogoYoutube } from '@vicons/ionicons5'
 
@@ -51,9 +51,5 @@ const updateScreenWidth = () => {
 
 onMounted(() => {
   window.addEventListener('resize', updateScreenWidth)
-})
-
-onBeforeUnmount(() => {
-  window.removeEventListener('resize', updateScreenWidth)
 })
 </script>

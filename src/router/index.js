@@ -1,7 +1,7 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
 import HomeView from '../view/HomeView.vue'
 import CartView from '../view/CartView.vue'
-import StoreView from '@/view/StoreView.vue'
+import StoreView from '../view/StoreView.vue'
 
 const routes = [
   {
@@ -24,6 +24,8 @@ const routes = [
 
 const router = createRouter({
   history: createWebHashHistory(),
+  //функция для режима истории,
+  // для управления навигацией в простых проектах
   routes,
 })
 

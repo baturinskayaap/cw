@@ -1,35 +1,99 @@
-# cwww
+# Курсовая работа Батуринская А 8И31
 
-This template should help get you started developing with Vue 3 in Vite.
+## Технологии
+- Vue - фреймворк JS
+- Naive UI +  - библиотека компонентов для Vue, используемые компоненты:
+* NGrid - адаптивные колонки с готовыми брейкпоинтами
+* NGridItem - дочерний эл NGrid, можно определить span (кол-во колонок) + offset(смещение)
+* NButton - кнопки с готовыми состояниями
+* NIcon - для отображения иконок, библиотека @vicons
+* NModal - модальное окно с готовой анимаций, позиционированием и состоянием
+* NSpace - управление расстоянием - ссылки в футере и хедере
+* NPagination - пагинация
+* NEmpty - если пусто, то..
+- ESlint - проще искать ошибки
+- Prettier - форматтер
+- Router
+- Pinia - для списка товаров + работы корзины
 
-## Recommended IDE Setup
+## Код
+### Скрипт
+#### pup & goods - каталоги
+стандартный
+#### cart - корзина
+- toggleItem - переключатель(тип, номер)
+получаем индекс первого эл из item удовл усл соотв типа и индекса
+индекс от 0 => >-1 - удаляем из массива, иначе - добавляем
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur).
+- submitOrder - получаем данные, формируем order, очищаем корзину
 
-## Customize configuration
+- isInCart - принимаем данные через state, возвращаем функцию от типа + id, которая возвращает тру/фолс о наличии в items
 
-See [Vite Configuration Reference](https://vite.dev/config/).
+#### router/index.js
+стандартный, кроме конфигурации для StoreView, параметры маршрута (path: '/store/:type' - type) передается как props
 
-## Project Setup
+#### ContactsModal
+Только импорты
 
-```sh
-npm install
-```
+#### HeaderCmp & FooterCmp
+импорты: библиотека + компонент модального окна + ref(реактивная перем) + computed(вычисл свойства от реакт сост) + onMounted(действия после монтирования)
 
-### Compile and Hot-Reload for Development
+isMobile - true/false, что размер окна < 768px
 
-```sh
-npm run dev
-```
+onMounted - обработчик resize, вызывает updateSW, что изменяет screenWidth - работа isMobile
 
-### Compile and Minify for Production
+#### CardCmp
+импорт: стор + библиотека + computed
+при вызове компоненты передаются пропсы:
+- мод(все/корзина)
+- тип каталога(питомцы/товары)
+- лимит на отображение(число)
+- внутренние эл (масссив) - для отображения пагинации
 
-```sh
-npm run build
-```
+store - контейнер данных
 
-### Lint with [ESLint](https://eslint.org/)
+вычисл items:
+- если есть внутр эл - возвращаем
+- если мод корзина - берем массив cartStore, для каждого элемента массива находим соответствующий эл stores[item.type] по id с помощью find, возвращаем копию + type, иначе ничего
+- если ничего из этого - корзина без фильтров
 
-```sh
-npm run lint
-```
+#### CartView
+canSubmit - t/f от заполнены ли имя и телефон и корзина (для работы кнопки)
+
+submit - submitOrder + orderSuccess для изменения страницы + очистка имени, телефона
+
+#### StoreView
+импорты: роут + сторы + библиотека
+(useRout - текущий маршрут => определяем параметр, useRouter - доступ к маршрутизатору)
+
+catalogType - получает props через url (route.params - объект с параметрами, type - параметр)
+
+allItems - хранилище от типа
+
+paginatedItems - получаем индексы товаров, возвращаем отрезок из allItems в соотв с индексами, копия каждого эл полученного отрезка (массива) + тип
+
+handlePC - получаем номер нужной страницы - меняем текущую страницу
+
+### Темпл
+#### Header & Footer
+используем isMobile для адаптивности колонок, так, хедер:
+span десктоп: 0 - меню моб, 5 - лого, 14 - меню деск, 5 - корзина (24) (выравнивание за счет offset)
+span мобильный: 1 - меню моб, 1 - лого, 0 - меню деск, 1 - корзина (3) (выравнивание за счет justify)
+
+ссылки через v-for для DRY, key - указание уникального ключа
+
+#### CardCmp & HomeView
+стандартно
+
+#### CartView
+v-model - связывает значение поля ввода с переменной 
+
+кнопка заказа отключена пока canSubmit не станет true
+
+#### StoreView
+Получаем CardCmp через пропс + вычисл перем
+
+n-pagination:
+- v-model:page - связывает текущее число страницы с переменной cP
+- page-count - общее число страниц
+- update... - обрабочик события перелистывания, передает номер новой страницы -> обновление страницы -> пересчет paginatedItems

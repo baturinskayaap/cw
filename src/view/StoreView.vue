@@ -6,7 +6,6 @@
   <n-pagination
     v-model:page="currentPage"
     :page-count="totalPages"
-    :page-slot="totalPages"
     @update:page="handlePageChange"
   />
 </template>

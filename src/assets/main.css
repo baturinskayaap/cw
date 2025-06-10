@@ -29,6 +29,13 @@ body {
   height: 100%;
 }
 
+.items {
+  gap: 20px;
+  display: flex;
+  align-items: baseline;
+  padding-top: 20px;
+}
+
 .logo {
   height: 50%;
   width: auto;
@@ -41,25 +48,34 @@ body {
 
 .image {
   max-width: 100%;
+  width: 100%;
   height: auto;
   max-height: 400px;
   object-fit: contain;
 }
 
-.content {
-  padding: 0 24px;
-  max-width: 1400px;
-  margin: 0 auto;
+.image-c {
+  height: auto;
   width: 100%;
-  flex: 1;
+  max-height: 300px;
+  object-fit: cover;
 }
 
-.n-layout {
-  overflow: visible !important;
+.map {
+  width: 100%;
+  height: 100%;
+  border: none;
 }
 
-.n-layout-scroll-container {
-  overflow: visible !important;
+.content {
+  max-width: 1400px;
+  width: 100%;
+}
+
+.modal {
+  max-width: 70%;
+  height: auto;
+  background-color: #f8f8f8;
 }
 
 h1 {
